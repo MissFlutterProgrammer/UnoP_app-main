@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -330,7 +332,7 @@ class FireStoreMethods {
     } catch (e) {
       // Handle/blocking error
       print('Error blocking user: $e');
-      throw e; // Rethrow the error for handling in the UI if needed
+      rethrow; // Rethrow the error for handling in the UI if needed
     }
   }
 }

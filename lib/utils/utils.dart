@@ -72,7 +72,7 @@ Widget buildListItem(
 // Returns a Future<bool> indicating whether the user accepted the EULA.
 Future<bool> showEulaDialog(BuildContext context) async {
   // Completer to manually complete the Future based on user action.
-  Completer<bool> _completion = Completer<bool>();
+  Completer<bool> completion = Completer<bool>();
 
   // Show dialog asynchronously.
   await showDialog(
@@ -80,9 +80,9 @@ Future<bool> showEulaDialog(BuildContext context) async {
     builder: (BuildContext context) {
       // Building the dialog with AlertDialog widget.
       return AlertDialog(
-        title: Text('End-User License Agreement'),
+        title: const Text('End-User License Agreement'),
         // Use a container to constrain the height of the WebView.
-        content: Container(
+        content: SizedBox(
           width: double.maxFinite,
           height: 400, // Set the height as needed.
           // Embedding a WebView to display the EULA content.
@@ -117,14 +117,14 @@ Future<bool> showEulaDialog(BuildContext context) async {
           ),
         ),
         actions: <Widget>[
-          Text(
+          const Text(
               "Do you agree on above term and agree that no tolerance for objectionable content or abusive users?"),
           TextButton(
             onPressed: () {
               // Pop the dialog and indicate disagreement.
               Navigator.of(context).pop(true);
             },
-            child: Text('Agree'),
+            child: const Text('Agree'),
           ),
           // Button to explicitly disagree, dismissing the dialog.
           TextButton(
@@ -132,19 +132,19 @@ Future<bool> showEulaDialog(BuildContext context) async {
               // Pop the dialog and indicate disagreement.
               Navigator.of(context).pop(false);
             },
-            child: Text('Disagree'),
+            child: const Text('Disagree'),
           ),
         ],
       );
     },
   ).then((value) {
     // Once the dialog is dismissed, check if the completion has not already been completed.
-    if (!_completion.isCompleted) {
+    if (!completion.isCompleted) {
       // Complete the completer with the value (true if accepted, false otherwise).
-      _completion.complete(value ?? false);
+      completion.complete(value ?? false);
     }
   });
 
   // Return the future of the completer, which resolves to the user's decision.
-  return _completion.future;
+  return completion.future;
 }

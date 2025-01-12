@@ -1,12 +1,12 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:unop/resources/firestore_methods.dart';
 
 class ManagePermissionsScreen extends StatefulWidget {
   final String groupId;
 
-  const ManagePermissionsScreen({Key? key, required this.groupId})
-      : super(key: key);
+  const ManagePermissionsScreen({super.key, required this.groupId});
 
   @override
   _ManagePermissionsScreenState createState() =>
@@ -74,9 +74,6 @@ class _ManagePermissionsScreenState extends State<ManagePermissionsScreen> {
             TextButton(
               child: const Text('Save'),
               onPressed: () async {
-                String res = await FireStoreMethods().updateMemberPermissions(
-                    groupData!, widget.groupId, memberId, canRead, canWrite);
-
                 Navigator.of(context).pop();
               },
             ),

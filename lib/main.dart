@@ -1,18 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:unop/providers/group_provider.dart';
 import 'package:unop/providers/user_provider.dart';
 import 'package:unop/responsive/mobile_screen_layout.dart';
 import 'package:unop/responsive/responsive_layout.dart';
-import 'package:unop/responsive/web_screen_layout.dart';
 import 'package:unop/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
 
   runApp(const MyApp());
 }
@@ -20,7 +16,7 @@ void main() async {
 GlobalKey<NavigatorState> mainNavigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +34,9 @@ class MyApp extends StatelessWidget {
         navigatorKey: mainNavigatorKey,
         title: 'unop',
         theme: ThemeData(
-            scaffoldBackgroundColor: Colors.grey, primaryColor: Colors.grey),
+          scaffoldBackgroundColor: Colors.grey,
+          primaryColor: Colors.grey,
+        ),
         //navigatorKey: mainNavigatorKey,
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),

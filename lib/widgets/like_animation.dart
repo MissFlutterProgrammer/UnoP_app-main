@@ -7,13 +7,13 @@ class LikeAnimation extends StatefulWidget {
   final VoidCallback? onEnd;
   final bool smallLike;
   const LikeAnimation({
-    Key? key,
+    super.key,
     required this.child,
     required this.isAnimating,
     this.duration = const Duration(milliseconds: 150),
     this.onEnd,
     this.smallLike = false,
-  }) : super(key: key);
+  });
 
   @override
   State<LikeAnimation> createState() => _LikeAnimationState();
@@ -29,7 +29,9 @@ class _LikeAnimationState extends State<LikeAnimation>
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: widget.duration.inMilliseconds ~/ 2),
+      duration: Duration(
+        milliseconds: widget.duration.inMilliseconds ~/ 2,
+      ),
     );
     scale = Tween<double>(begin: 1, end: 1.2).animate(controller);
   }

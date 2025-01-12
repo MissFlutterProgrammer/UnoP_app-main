@@ -32,15 +32,21 @@ class Group {
         groupName: snapshot["groupName"],
         groupNameLowerCase: snapshot["groupNameLowerCase"],
         groupid: snapshot["groupid"],
-        admin: List<String>.from(snapshot["admin"]),
+        admin: List<String>.from(
+          snapshot["admin"],
+        ),
         photoUrl: snapshot["photoUrl"],
         bio: snapshot["bio"],
-        member: List<String>.from(snapshot["member"]),
+        member: List<String>.from(
+          snapshot["member"],
+        ),
         privacy: snapshot["privacy"],
         canRead: List<String>.from(
-            snapshot["canRead"] ?? []), // Handle possible null
+          snapshot["canRead"] ?? [],
+        ), // Handle possible null
         canWrite: List<String>.from(
-            snapshot["canWrite"] ?? []) // Handle possible null
+          snapshot["canWrite"] ?? [],
+        ) // Handle possible null
         );
   }
 

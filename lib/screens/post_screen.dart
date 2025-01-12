@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:unop/utils/colors.dart';
@@ -21,7 +23,9 @@ class _PostsScreenState extends State<PostsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.posts.isNotEmpty &&
           widget.desiredIndex < widget.posts.length) {
-        _itemScrollController.jumpTo(index: widget.desiredIndex);
+        _itemScrollController.jumpTo(
+          index: widget.desiredIndex,
+        );
       }
     });
   }
@@ -35,13 +39,15 @@ class _PostsScreenState extends State<PostsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Posts"),
+        title: const Text("Posts"),
         backgroundColor: appbarColor,
       ),
       body: ScrollablePositionedList.builder(
         itemCount: widget.posts.length,
-        itemBuilder: (context, index) =>
-            PostCard(isFeed: false, snap: widget.posts[index]),
+        itemBuilder: (context, index) => PostCard(
+          isFeed: false,
+          snap: widget.posts[index],
+        ),
         itemScrollController: _itemScrollController,
       ),
     );

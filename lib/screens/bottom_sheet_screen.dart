@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class BottomSheetScreen extends StatefulWidget {
   final Widget? child;
-  const BottomSheetScreen({Key? key, required this.child}) : super(key: key);
+  const BottomSheetScreen({super.key, required this.child});
 
   @override
   State<BottomSheetScreen> createState() => _BottomSheetScreenState();

@@ -1,13 +1,12 @@
-import 'dart:math';
+// ignore_for_file: avoid_print
 
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:unop/models/user.dart' as model;
 import 'package:unop/resources/storage_methods.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:unop/utils/utils.dart';
 
 class AuthMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -125,7 +124,7 @@ class AuthMethods {
 
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
-      if (!await checkIfEmailExists(googleSignInAccount!.email)) {
+      if (!await checkIfEmailExists(googleSignInAccount.email)) {
         ByteData bytes = await rootBundle.load('assets/UnoP_logo.png');
 
         signInWithGoogle(
@@ -305,7 +304,7 @@ class AuthMethods {
           userSearchId:
               userSearchId, // Assuming you meant to use googleUser.id here
           photoUrl: photoUrl,
-          email: "apple@apple.email" ?? 'No Email', // Provide a default value
+          email: "apple@apple.email", // Provide a default value
           bio: bio, // Make sure 'bio' is not null
           followers: [],
           following: [],

@@ -1,9 +1,8 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:unop/main.dart';
-import 'package:unop/responsive/mobile_screen_layout.dart';
-import 'package:unop/screens/group_profile_screen.dart';
 import 'package:unop/widgets/like_animation.dart';
 
 // A StatefulWidget that represents an individual group card.
@@ -15,11 +14,11 @@ class GroupCard extends StatefulWidget {
 
   // Constructor requiring the document snapshot, user data, and the like button callback.
   const GroupCard({
-    Key? key,
+    super.key,
     required this.snap,
     required this.userData,
     required this.onLikePressed,
-  }) : super(key: key);
+  });
 
   @override
   _GroupCardState createState() => _GroupCardState();

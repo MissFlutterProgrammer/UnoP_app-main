@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -12,7 +14,7 @@ import 'package:unop/screens/crop_result_view_screen.dart';
 import 'package:unop/utils/colors.dart';
 
 class AddPostScreen extends StatefulWidget {
-  AddPostScreen({super.key});
+  const AddPostScreen({super.key});
 
   @override
   _AddPostScreenState createState() => _AddPostScreenState();
@@ -124,78 +126,100 @@ class _AddPostScreenState extends State<AddPostScreen> {
           ),
         ),
         body: SingleChildScrollView(
-            child: Column(children: <Widget>[
-          isLoading ? const LinearProgressIndicator() : Container(),
-          const SizedBox(
-            height: 10,
-          ),
-          Center(
-              child: Column(
+          child: Column(
+            children: <Widget>[
+              isLoading ? const LinearProgressIndicator() : Container(),
+              const SizedBox(height: 10),
+              Center(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                SizedBox(
-                    height: 250,
-                    child: (selectedImages.length > 1)
-                        ? ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: selectedImages.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
+                    SizedBox(
+                      height: 250,
+                      child: (selectedImages.length > 1)
+                          ? ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: selectedImages.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
                                   padding: const EdgeInsets.all(10),
-                                  child: Image.file(selectedImages[index]));
-                            })
-                        : Image.file(selectedImages[0]))
-              ])),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: TextField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(
-                      hintText: "Write a caption...", border: InputBorder.none),
-                  maxLines: 6,
-                  textInputAction: TextInputAction.done,
+                                  child: Image.file(
+                                    selectedImages[index],
+                                  ),
+                                );
+                              })
+                          : Image.file(selectedImages[0]),
+                    )
+                  ],
                 ),
               ),
-            ],
-          ),
-          const Divider(color: secondaryColor),
-          Row(children: [
-            Expanded(
-                child: Column(children: [
-              const Row(
-                children: [
-                  Padding(
-                      padding: EdgeInsets.only(left: 15, right: 10),
-                      child: Icon(Icons.group_add, size: 30)),
-                  Text(
-                    'Add Groups',
-                    style: TextStyle(fontSize: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: TextField(
+                      controller: _descriptionController,
+                      decoration: const InputDecoration(
+                        hintText: "Write a caption...",
+                        border: InputBorder.none,
+                      ),
+                      maxLines: 6,
+                      textInputAction: TextInputAction.done,
+                    ),
                   ),
                 ],
               ),
-              Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: DropdownSearch<String>.multiSelection(
-                      items: writableGroups,
-                      dropdownButtonProps:
-                          const DropdownButtonProps(icon: Icon(Icons.add)),
-                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                        textAlignVertical: TextAlignVertical.center,
-                        dropdownSearchDecoration: InputDecoration(
-                            border: InputBorder.none, hintText: "Empty"),
-                      ),
-                      onChanged: (List<String> selectedItems) {
-                        setState(() {
-                          selectedGroups = selectedItems;
-                        });
-                      }))
-            ]))
-          ]),
-        ])),
+              const Divider(color: secondaryColor),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 15, right: 10),
+                              child: Icon(
+                                Icons.group_add,
+                                size: 30,
+                              ),
+                            ),
+                            Text(
+                              'Add Groups',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: DropdownSearch<String>.multiSelection(
+                              items: writableGroups,
+                              dropdownButtonProps: const DropdownButtonProps(
+                                icon: Icon(Icons.add),
+                              ),
+                              dropdownDecoratorProps:
+                                  const DropDownDecoratorProps(
+                                textAlignVertical: TextAlignVertical.center,
+                                dropdownSearchDecoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Empty"),
+                              ),
+                              onChanged: (List<String> selectedItems) {
+                                setState(() {
+                                  selectedGroups = selectedItems;
+                                });
+                              }),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
         bottomNavigationBar: Padding(
             padding:
                 const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 60),

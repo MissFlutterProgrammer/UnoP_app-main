@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/widgets.dart';
 import 'package:unop/models/user.dart' as model;
 import 'package:unop/resources/auth_methods.dart';

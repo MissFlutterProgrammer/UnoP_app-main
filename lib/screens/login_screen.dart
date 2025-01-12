@@ -1,17 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:unop/main.dart';
-import 'package:unop/navigator/navigation_service.dart';
 import 'package:unop/resources/auth_methods.dart';
 import 'package:unop/responsive/mobile_screen_layout.dart';
 import 'package:unop/responsive/responsive_layout.dart';
-import 'package:unop/responsive/web_screen_layout.dart';
 import 'package:unop/screens/signup_screen.dart';
 import 'package:unop/utils/colors.dart';
 import 'package:unop/utils/global_variable.dart';
 import 'package:unop/utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (res == "first_time") {
       bool? getAgree = await showEulaDialog(context);
-      if (!getAgree!) {
+      if (!getAgree) {
         res = "Failed with agreement";
       } else {
         res = "success";
@@ -93,7 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
           // Adjusts padding based on screen size.
           padding: MediaQuery.of(context).size.width > webScreenSize
               ? EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width / 3)
+                  horizontal: MediaQuery.of(context).size.width / 3,
+                )
               : const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
           child: Column(
@@ -121,13 +122,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   fillColor: Colors.black, // sets the background color to black
                   hintText: 'Enter your email',
                   hintStyle: TextStyle(
-                      color: Colors.white), // optional, for better contrast
+                    color: Colors.white,
+                  ), // optional, for better contrast
                   // Add other styling as needed
                 ),
                 keyboardType: TextInputType.emailAddress,
                 controller: _emailController,
                 style: const TextStyle(
-                    color: Colors.white), // sets the text color to white
+                  color: Colors.white,
+                ), // sets the text color to white
                 // Add other properties as needed
               ),
               const SizedBox(
@@ -169,9 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 // Add other properties as needed
               ),
-              const SizedBox(
-                height: 24,
-              ),
+              const SizedBox(height: 24),
               InkWell(
                 onTap: () => {loginUser("email")},
                 // Styling for the login button.
@@ -197,94 +198,91 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                 ),
               ),
-              const SizedBox(
-                height: 24, // Spacing between widgets.
+              const SizedBox(height: 24),
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width *
+                      0.8, // 80% of screen width
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: InkWell(
+                      onTap: () async {
+                        // Your Google sign-in logic
+                        loginUser("google");
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize
+                              .min, // to keep the row size to a minimum
+                          children: [
+                            Image.asset(
+                              'assets/google.png',
+                              height: 40, // Adjust the size as needed
+                            ),
+                            const SizedBox(width: 10),
+                            const Text(
+                              'Log in with Google',
+                              style: TextStyle(
+                                fontSize: 16, // Adjust the font size as needed
+                                fontWeight:
+                                    FontWeight.bold, // optional, for emphasis
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
               Center(
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width *
-                          0.8, // 80% of screen width
-                      child: Card(
-                        color: Colors.white,
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: InkWell(
-                          onTap: () async {
-                            // Your Google sign-in logic
-                            loginUser("google");
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize
-                                  .min, // to keep the row size to a minimum
-                              children: [
-                                Image.asset(
-                                  'assets/google.png',
-                                  height: 40, // Adjust the size as needed
-                                ),
-                                const SizedBox(
-                                    width:
-                                        10), // for spacing between image and text
-                                const Text(
-                                  'Log in with Google',
-                                  style: TextStyle(
-                                      fontSize:
-                                          16, // Adjust the font size as needed
-                                      fontWeight: FontWeight
-                                          .bold, // optional, for emphasis
-                                      color: Colors.grey),
-                                ),
-                              ],
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width *
+                      0.8, // 80% of screen width
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: InkWell(
+                      onTap: () async {
+                        // Your Google sign-in logic
+                        loginUser("apple");
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize
+                              .min, // to keep the row size to a minimum
+                          children: [
+                            Image.asset(
+                              'assets/apple.png',
+                              height: 40, // Adjust the size as needed
                             ),
-                          ),
-                        ),
-                      ))),
-              Center(
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width *
-                          0.8, // 80% of screen width
-                      child: Card(
-                        color: Colors.white,
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: InkWell(
-                          onTap: () async {
-                            // Your Google sign-in logic
-                            loginUser("apple");
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize
-                                  .min, // to keep the row size to a minimum
-                              children: [
-                                Image.asset(
-                                  'assets/apple.png',
-                                  height: 40, // Adjust the size as needed
-                                ),
-                                const SizedBox(
-                                    width:
-                                        10), // for spacing between image and text
-                                const Text(
-                                  'Log in with Apple',
-                                  style: TextStyle(
-                                      fontSize:
-                                          16, // Adjust the font size as needed
-                                      fontWeight: FontWeight
-                                          .bold, // optional, for emphasis
-                                      color: Colors.grey),
-                                ),
-                              ],
+                            const SizedBox(width: 10),
+                            const Text(
+                              'Log in with Apple',
+                              style: TextStyle(
+                                fontSize: 16, // Adjust the font size as needed
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ))),
-              const SizedBox(
-                height: 12,
+                      ),
+                    ),
+                  ),
+                ),
               ),
+              const SizedBox(height: 12),
 
               // Spacing at the bottom.
               Flexible(
@@ -312,9 +310,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       // );
                       mainNavigatorKey.currentState
                           ?.popUntil((route) => route.isFirst);
-                      mainNavigatorKey.currentState?.push(MaterialPageRoute(
-                        builder: (context) => const SignupScreen(),
-                      ));
+                      mainNavigatorKey.currentState?.push(
+                        MaterialPageRoute(
+                          builder: (context) => const SignupScreen(),
+                        ),
+                      );
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),

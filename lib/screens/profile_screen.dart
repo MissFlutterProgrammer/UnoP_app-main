@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:unop/main.dart';
 import 'package:unop/resources/auth_methods.dart';
 import 'package:unop/resources/firestore_methods.dart';
-import 'package:unop/responsive/mobile_screen_layout.dart';
 import 'package:unop/screens/edit_profile_screen.dart';
 import 'package:unop/screens/group_signup_screen.dart';
 import 'package:unop/screens/login_screen.dart';
@@ -16,7 +17,7 @@ import 'package:unop/widgets/group_card.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
-  const ProfileScreen({Key? key, required this.uid}) : super(key: key);
+  const ProfileScreen({super.key, required this.uid});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -156,34 +157,35 @@ class _ProfileScreenState extends State<ProfileScreen>
     return ListView(
       children: [
         ListTile(
-          leading: Icon(Icons.edit),
-          title: Text('Edit Profile'),
+          leading: const Icon(Icons.edit),
+          title: const Text('Edit Profile'),
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => EditProfileScreen(
-                    userData: userData as Map<String, dynamic>),
+                  userData: userData as Map<String, dynamic>,
+                ),
               ),
             );
           },
         ),
 
         ListTile(
-          leading: Icon(Icons.report),
-          title: Text('Report User'),
+          leading: const Icon(Icons.report),
+          title: const Text('Report User'),
           onTap: () {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Report User'),
+                title: const Text('Report User'),
                 content: TextField(
                   controller:
                       TextEditingController(), // Controller to capture reason input
                   onChanged: (value) {
                     // Store the reason input
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Enter reason for reporting',
                   ),
                 ),
@@ -200,22 +202,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                         Navigator.of(context).pop(); // Close the dialog
                         // Show a confirmation message to the user
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text(
-                                'User reported successfully and we will act on objectionable content reports within 24 hours '),
+                              'User reported successfully and we will act on objectionable content reports within 24 hours ',
+                            ),
                           ),
                         );
                       } catch (e) {
                         // Handle/report error
                       }
                     },
-                    child: Text('Report'),
+                    child: const Text('Report'),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop(); // Close the dialog
                     },
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   ),
                 ],
               ),
@@ -223,14 +226,15 @@ class _ProfileScreenState extends State<ProfileScreen>
           },
         ),
         ListTile(
-          leading: Icon(Icons.block),
-          title: Text('Block User'),
+          leading: const Icon(Icons.block),
+          title: const Text('Block User'),
           onTap: () {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Block User'),
-                content: Text('Are you sure you want to block this user?'),
+                title: const Text('Block User'),
+                content:
+                    const Text('Are you sure you want to block this user?'),
                 actions: [
                   TextButton(
                     onPressed: () async {
@@ -243,7 +247,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         Navigator.of(context).pop(); // Close the dialog
                         // Show a confirmation message to the user
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                          const SnackBar(
                             content: Text('User blocked successfully'),
                           ),
                         );
@@ -251,13 +255,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                         // Handle/block error
                       }
                     },
-                    child: Text('Block'),
+                    child: const Text('Block'),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop(); // Close the dialog
                     },
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   ),
                 ],
               ),
@@ -323,13 +327,16 @@ class _ProfileScreenState extends State<ProfileScreen>
         ),
 
         ListTile(
-          leading: Icon(Icons.delete),
-          title: Text('Delete account'),
+          leading: const Icon(Icons.delete),
+          title: const Text('Delete account'),
           onTap: () {
             AuthMethods().deleteUserAccount();
             mainNavigatorKey.currentState?.popUntil((route) => route.isFirst);
             mainNavigatorKey.currentState?.push(
-                MaterialPageRoute(builder: (context) => const LoginScreen()));
+              MaterialPageRoute(
+                builder: (context) => const LoginScreen(),
+              ),
+            );
           },
         ),
       ],
@@ -368,22 +375,20 @@ class _ProfileScreenState extends State<ProfileScreen>
                 child: ListView(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(
-                          16), // Adds padding around the column.
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
                           Row(
                             children: [
                               Container(
-                                width:
-                                    80, // Width of the square, double the radius
-                                height:
-                                    80, // Height of the square, double the radius
+                                width: 80,
+                                height: 80,
                                 decoration: BoxDecoration(
                                   image: userData['photoUrl'] != null
                                       ? DecorationImage(
                                           image: CachedNetworkImageProvider(
-                                              userData['photoUrl']),
+                                            userData['photoUrl'],
+                                          ),
                                           fit: BoxFit
                                               .cover, // Ensures the image covers the container
                                         )
@@ -510,7 +515,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     ),
                     //const Divider(), // A divider for visual separation.
 
-                    Container(
+                    SizedBox(
                       height: 420, // Adjust the height as needed
                       child: TabBarView(
                         controller: _tabController,
@@ -535,7 +540,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                 }, // Example icon, change as needed
                 backgroundColor: Colors.grey,
 
-                child: const Icon(Icons.add, size: 40), // White color for FAB
+                child: const Icon(
+                  Icons.add,
+                  size: 40,
+                ), // White color for FAB
                 // You can adjust padding if needed
               ),
             ),

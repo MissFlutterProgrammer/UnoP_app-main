@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison, prefer_typing_uninitialized_variables, avoid_print
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,8 +22,7 @@ class PostCard extends StatefulWidget {
   final snap; // Snapshot containing post data
   final bool isFeed; // Flag to determine if it's in the feed
 
-  const PostCard({Key? key, required this.snap, required this.isFeed})
-      : super(key: key);
+  const PostCard({super.key, required this.snap, required this.isFeed});
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -75,8 +76,9 @@ class _PostCardState extends State<PostCard> {
         width: 10,
         height: 10,
         decoration: BoxDecoration(
-            color: currentIndex == index ? Colors.white : Colors.black26,
-            shape: BoxShape.circle),
+          color: currentIndex == index ? Colors.white : Colors.black26,
+          shape: BoxShape.circle,
+        ),
       );
     });
   }
@@ -118,9 +120,10 @@ class _PostCardState extends State<PostCard> {
     FireStoreMethods().reportPost(userId, postId, reason);
     print('Reported by user: $userId for post: $postId for reason: $reason');
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text(
-            'User reported successfully and we will act on objectionable content reports within 24 hours '),
+          'User reported successfully and we will act on objectionable content reports within 24 hours ',
+        ),
       ),
     );
   }
@@ -164,7 +167,7 @@ class _PostCardState extends State<PostCard> {
   Widget _buildPopupMenu(BuildContext context, String userId, String postId) {
     // Popup menu for report and delete options
     return PopupMenuButton<String>(
-      icon: Container(
+      icon: SizedBox(
         width: 40.0, // Set the desired width
         height: 40.0, // Set the desired height
         child: const Icon(
@@ -229,7 +232,7 @@ class _PostCardState extends State<PostCard> {
             user?.group != null &&
             user!.group.isNotEmpty) {
           bool hasCommonElement = widget.snap['groupId']
-              .any((aElement) => user!.group.contains(aElement));
+              .any((aElement) => user.group.contains(aElement));
           if (!hasCommonElement) {
             return Container();
           }
@@ -253,249 +256,250 @@ class _PostCardState extends State<PostCard> {
         children: [
           // IMAGE SECTION OF THE POST
           GestureDetector(
-              onDoubleTap: () {
-                if (user != null) {
-                  FireStoreMethods().likePost(
-                    widget.snap['postId'].toString(),
-                    user.uid,
-                    widget.snap['likes'],
-                  );
-                  setState(() {
-                    isLikeAnimating = true;
-                  });
-                }
-              },
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  CustomBox(
-                    child: Column(
-                      children: [
-                        // Report Button
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: imageSizes != null
-                                ? MediaQuery.of(context).size.width *
-                                    (imageSizes.height / imageSizes.width)
-                                : 200, // Set a default height or adjust as needed // Fallback height if imageSizes is null, // Calculate the height keeping the aspect ratio,
-                            child: PageView.builder(
-                                itemCount: widget.snap['postUrl'].length,
-                                pageSnapping: true,
-                                controller: _pageController,
-                                onPageChanged: (page) {
-                                  setState(() {
-                                    activePage = page;
-                                  });
-                                },
-                                itemBuilder: (context, pagePosition) {
-                                  bool active = pagePosition == activePage;
-                                  return slider(widget.snap['postUrl'],
-                                      pagePosition, active);
-                                }),
-                          ),
+            onDoubleTap: () {
+              if (user != null) {
+                FireStoreMethods().likePost(
+                  widget.snap['postId'].toString(),
+                  user.uid,
+                  widget.snap['likes'],
+                );
+                setState(() {
+                  isLikeAnimating = true;
+                });
+              }
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomBox(
+                  child: Column(
+                    children: [
+                      // Report Button
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: imageSizes != null
+                              ? MediaQuery.of(context).size.width *
+                                  (imageSizes.height / imageSizes.width)
+                              : 200, // Set a default height or adjust as needed // Fallback height if imageSizes is null, // Calculate the height keeping the aspect ratio,
+                          child: PageView.builder(
+                              itemCount: widget.snap['postUrl'].length,
+                              pageSnapping: true,
+                              controller: _pageController,
+                              onPageChanged: (page) {
+                                setState(() {
+                                  activePage = page;
+                                });
+                              },
+                              itemBuilder: (context, pagePosition) {
+                                bool active = pagePosition == activePage;
+                                return slider(widget.snap['postUrl'],
+                                    pagePosition, active);
+                              }),
                         ),
+                      ),
 
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: indicators(
-                                widget.snap['postUrl'].length, activePage)),
-                        Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment
-                                        .center, // Aligns children vertically to the center
-                                    children: <Widget>[
-                                      Container(
-                                        width: 32, // Width of the square
-                                        height: 32, // Height of the square
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: CachedNetworkImageProvider(
-                                              widget.snap['profImage']
-                                                  .toString(), // The image URL
-                                              // You can add errorListener if you want to handle errors
-                                            ),
-                                            fit: BoxFit
-                                                .cover, // Ensures the image covers the container
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                              4), // Optional: if you want rounded corners
-                                          // You can add more styling as needed
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                          width:
-                                              8), // Add space between the avatar and the text
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            widget.snap['username'].toString(),
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          // You can add more widgets here if needed
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-
-                                  //const SizedBox(height: 5),
-                                ],
-                              ),
-
-                              // LIKE, COMMENT SECTION OF THE POST
-                              Row(
-                                children: <Widget>[
-                                  // Comment Icon and Text
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .center, // Aligns children to the center of the column
-
-                                    children: [
-                                      IconButton(
-                                        icon:
-                                            const Icon(Icons.comment_outlined),
-                                        onPressed: () =>
-                                            Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CommentsScreen(
-                                              postId: widget.snap['postId']
-                                                  .toString(),
-                                            ),
-                                          ),
-                                        ),
-                                        padding: const EdgeInsets.fromLTRB(
-                                            15,
-                                            0,
-                                            15,
-                                            0), // Remove padding inside IconButton
-                                        constraints:
-                                            const BoxConstraints(), // Remove additional constraints
-                                      ),
-                                      Text('$commentLen '),
-                                    ],
-                                  ),
-
-                                  // Like Icon and Text
-                                  Column(
-                                    children: [
-                                      LikeAnimation(
-                                        isAnimating: user != null &&
-                                                widget.snap['likes']
-                                                    .contains(user.uid)
-                                            ? true
-                                            : false,
-                                        smallLike: true,
-                                        child: IconButton(
-                                          icon: widget.snap['likes']
-                                                  .contains(user?.uid)
-                                              ? const Icon(Icons.favorite,
-                                                  color: Colors.red)
-                                              : const Icon(
-                                                  Icons.favorite_border),
-                                          onPressed: () {
-                                            if (user != null) {
-                                              FireStoreMethods().likePost(
-                                                widget.snap['postId']
-                                                    .toString(),
-                                                user.uid,
-                                                widget.snap['likes'],
-                                              );
-                                            }
-                                          },
-                                          padding: const EdgeInsets.fromLTRB(
-                                              0,
-                                              0,
-                                              0,
-                                              0), // Remove padding inside IconButton
-                                          constraints: const BoxConstraints(),
-                                        ),
-                                      ),
-                                      Text('${widget.snap['likes'].length} '),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: indicators(
+                          widget.snap['postUrl'].length,
+                          activePage,
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height *
-                              0.04, // Adjust the height as needed
-                          width: MediaQuery.of(context).size.width * 0.6,
-
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment
-                                .start, // Align children to the start of the cross axis
-                            children: [
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment
-                                      .centerLeft, // Align text to the left
-                                  child: Text(
-                                    ' ${widget.snap['description']}',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 11,
-                                      color: Colors.grey.shade700,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .center, // Aligns children vertically to the center
+                                  children: <Widget>[
+                                    Container(
+                                      width: 32, // Width of the square
+                                      height: 32, // Height of the square
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: CachedNetworkImageProvider(
+                                            widget.snap['profImage']
+                                                .toString(), // The image URL
+                                            // You can add errorListener if you want to handle errors
+                                          ),
+                                          fit: BoxFit
+                                              .cover, // Ensures the image covers the container
+                                        ),
+                                        borderRadius: BorderRadius.circular(4),
+                                        // You can add more styling as needed
+                                      ),
                                     ),
-                                    maxLines: null,
-                                    overflow: TextOverflow.clip,
+                                    const SizedBox(width: 8),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          widget.snap['username'].toString(),
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        // You can add more widgets here if needed
+                                      ],
+                                    ),
+                                  ],
+                                ),
+
+                                //const SizedBox(height: 5),
+                              ],
+                            ),
+
+                            // LIKE, COMMENT SECTION OF THE POST
+                            Row(
+                              children: <Widget>[
+                                // Comment Icon and Text
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, // Aligns children to the center of the column
+
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.comment_outlined),
+                                      onPressed: () =>
+                                          Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => CommentsScreen(
+                                            postId: widget.snap['postId']
+                                                .toString(),
+                                          ),
+                                        ),
+                                      ),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          15,
+                                          0,
+                                          15,
+                                          0), // Remove padding inside IconButton
+                                      constraints:
+                                          const BoxConstraints(), // Remove additional constraints
+                                    ),
+                                    Text('$commentLen '),
+                                  ],
+                                ),
+
+                                // Like Icon and Text
+                                Column(
+                                  children: [
+                                    LikeAnimation(
+                                      isAnimating: user != null &&
+                                              widget.snap['likes']
+                                                  .contains(user.uid)
+                                          ? true
+                                          : false,
+                                      smallLike: true,
+                                      child: IconButton(
+                                        icon: widget.snap['likes']
+                                                .contains(user?.uid)
+                                            ? const Icon(
+                                                Icons.favorite,
+                                                color: Colors.red,
+                                              )
+                                            : const Icon(
+                                                Icons.favorite_border,
+                                              ),
+                                        onPressed: () {
+                                          if (user != null) {
+                                            FireStoreMethods().likePost(
+                                              widget.snap['postId'].toString(),
+                                              user.uid,
+                                              widget.snap['likes'],
+                                            );
+                                          }
+                                        },
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0,
+                                            0,
+                                            0,
+                                            0), // Remove padding inside IconButton
+                                        constraints: const BoxConstraints(),
+                                      ),
+                                    ),
+                                    Text('${widget.snap['likes'].length} '),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height *
+                            0.04, // Adjust the height as needed
+                        width: MediaQuery.of(context).size.width * 0.6,
+
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment
+                              .start, // Align children to the start of the cross axis
+                          children: [
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment
+                                    .centerLeft, // Align text to the left
+                                child: Text(
+                                  ' ${widget.snap['description']}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 11,
+                                    color: Colors.grey.shade700,
                                   ),
+                                  maxLines: null,
+                                  overflow: TextOverflow.clip,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: _buildPopupMenu(
-                      context,
-                      user?.uid ??
-                          "", // Provide a default value when user?.uid is null
-                      widget.snap['postId'],
-                    ),
-                  ),
-                  AnimatedOpacity(
-                    duration: const Duration(milliseconds: 200),
-                    opacity: isLikeAnimating ? 1 : 0,
-                    child: LikeAnimation(
-                      isAnimating: isLikeAnimating,
-                      duration: const Duration(
-                        milliseconds: 400,
                       ),
-                      onEnd: () {
-                        setState(() {
-                          isLikeAnimating = false;
-                        });
-                      },
-                      child: const Icon(
-                        Icons.favorite,
-                        color: Colors.white,
-                        size: 100,
-                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: _buildPopupMenu(
+                    context,
+                    user?.uid ??
+                        "", // Provide a default value when user?.uid is null
+                    widget.snap['postId'],
+                  ),
+                ),
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: isLikeAnimating ? 1 : 0,
+                  child: LikeAnimation(
+                    isAnimating: isLikeAnimating,
+                    duration: const Duration(
+                      milliseconds: 400,
+                    ),
+                    onEnd: () {
+                      setState(() {
+                        isLikeAnimating = false;
+                      });
+                    },
+                    child: const Icon(
+                      Icons.favorite,
+                      color: Colors.white,
+                      size: 100,
                     ),
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
 
           //DESCRIPTION AND NUMBER OF COMMENTS
           Container(

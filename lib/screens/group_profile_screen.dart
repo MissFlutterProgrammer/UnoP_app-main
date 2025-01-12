@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +14,7 @@ import 'package:unop/widgets/follow_button.dart';
 
 class GroupProfileScreen extends StatefulWidget {
   final String groupid;
-  const GroupProfileScreen({Key? key, required this.groupid}) : super(key: key);
+  const GroupProfileScreen({super.key, required this.groupid});
 
   @override
   State<GroupProfileScreen> createState() => _ProfileScreenState();
@@ -233,7 +235,8 @@ class _ProfileScreenState extends State<GroupProfileScreen>
                               image: groupData['photoUrl'] != null
                                   ? DecorationImage(
                                       image: CachedNetworkImageProvider(
-                                          groupData['photoUrl']),
+                                        groupData['photoUrl'],
+                                      ),
                                       fit: BoxFit
                                           .cover, // Ensures the image covers the container
                                     )

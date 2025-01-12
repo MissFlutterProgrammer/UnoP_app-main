@@ -1,10 +1,12 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CommentCard extends StatelessWidget {
   final snap;
-  const CommentCard({Key? key, required this.snap}) : super(key: key);
+  const CommentCard({super.key, required this.snap});
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +32,11 @@ class CommentCard extends StatelessWidget {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                            text: snap.data()['name'],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            )),
+                          text: snap.data()['name'],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         TextSpan(
                           text: ' ${snap.data()['text']}',
                         ),

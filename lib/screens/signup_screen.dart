@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +8,6 @@ import 'package:unop/main.dart';
 import 'package:unop/resources/auth_methods.dart';
 import 'package:unop/responsive/mobile_screen_layout.dart';
 import 'package:unop/responsive/responsive_layout.dart';
-import 'package:unop/responsive/web_screen_layout.dart';
 import 'package:unop/screens/email_verification_screen.dart';
 import 'package:unop/screens/login_screen.dart';
 import 'package:unop/utils/colors.dart';
@@ -15,7 +16,7 @@ import 'package:unop/utils/utils.dart';
 import 'package:unop/widgets/text_field_input.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -60,7 +61,11 @@ class _SignupScreenState extends State<SignupScreen> {
         password.isEmpty) {
       // Show an error message if email or username is empty
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Email and username cannot be empty")),
+        const SnackBar(
+          content: Text(
+            "Email and username cannot be empty",
+          ),
+        ),
       );
       setState(() {
         _isLoading = false;
@@ -82,7 +87,7 @@ class _SignupScreenState extends State<SignupScreen> {
         userSearchId: userSearchId);
 
     bool? getAgree = await showEulaDialog(context);
-    if (!getAgree!) {
+    if (!getAgree) {
       res = "Failed with agreement";
     }
 
@@ -205,7 +210,7 @@ class _SignupScreenState extends State<SignupScreen> {
         bool? getAgree = await showEulaDialog(context);
 
         // Handling the response after the login attempt.
-        if (getAgree!) {
+        if (getAgree) {
           if (context.mounted) {
             // Navigates to the main app screen on successful login.
             mainNavigatorKey.currentState?.popUntil((route) => route.isFirst);
@@ -233,17 +238,16 @@ class _SignupScreenState extends State<SignupScreen> {
         }
       }
     } catch (e) {
-      // TODO: Show alert here
       print(e);
     }
   }
 
 // Function to select an image from the gallery
   Future<void> selectImage() async {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
 
     // Pick an image
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
 
@@ -311,9 +315,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ],
               ),
 
-              const SizedBox(
-                height: 24, // Spacing between widgets.
-              ),
+              const SizedBox(height: 24),
               // Text field for entering the username.
               TextFieldInput(
                 hintText: 'Enter your username (Required)',
@@ -329,103 +331,98 @@ class _SignupScreenState extends State<SignupScreen> {
                 textEditingController: _userSearchIdController,
               ),
 
-              const SizedBox(
-                height: 24, // Spacing between widgets.
-              ),
+              const SizedBox(height: 24),
               // Text field for entering the bio.
               TextFieldInput(
                 hintText: 'Enter your bio (Required)',
                 textInputType: TextInputType.text,
                 textEditingController: _bioController,
               ),
-              const SizedBox(
-                height: 24, // Spacing between widgets.
-              ),
+              const SizedBox(height: 24),
               Center(
-                  child: Card(
-                color: Colors.white,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: InkWell(
-                  onTap: () async {
-                    // Your Google sign-in logic
-                    _signUpUserWithGoogle();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisSize:
-                          MainAxisSize.min, // to keep the row size to a minimum
-                      children: [
-                        Image.asset(
-                          'assets/google.png',
-                          height: 40, // Adjust the size as needed
-                        ),
-                        const SizedBox(
-                            width: 10), // for spacing between image and text
-                        const Text(
-                          'Sign in with Google',
-                          style: TextStyle(
+                child: Card(
+                  color: Colors.white,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: InkWell(
+                    onTap: () async {
+                      // Your Google sign-in logic
+                      _signUpUserWithGoogle();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize
+                            .min, // to keep the row size to a minimum
+                        children: [
+                          Image.asset(
+                            'assets/google.png',
+                            height: 40, // Adjust the size as needed
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            'Sign in with Google',
+                            style: TextStyle(
                               fontSize: 16, // Adjust the font size as needed
                               fontWeight:
                                   FontWeight.bold, // optional, for emphasis
-                              color: Colors.grey),
-                        ),
-                      ],
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              )),
+              ),
 
               Center(
-                  child: Card(
-                color: Colors.white,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: InkWell(
-                  onTap: () async {
-                    // Your apple sign-in logic
-                    _signInWithApple();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisSize:
-                          MainAxisSize.min, // to keep the row size to a minimum
-                      children: [
-                        Image.asset(
-                          'assets/apple.png',
-                          height: 40, // Adjust the size as needed
-                        ),
-                        const SizedBox(
-                            width: 10), // for spacing between image and text
-                        const Text(
-                          'Sign in with Apple',
-                          style: TextStyle(
-                              fontSize: 16, // Adjust the font size as needed
-                              fontWeight:
-                                  FontWeight.bold, // optional, for emphasis
-                              color: Colors.grey),
-                        ),
-                      ],
+                child: Card(
+                  color: Colors.white,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: InkWell(
+                    onTap: () async {
+                      // Your apple sign-in logic
+                      _signInWithApple();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize
+                            .min, // to keep the row size to a minimum
+                        children: [
+                          Image.asset(
+                            'assets/apple.png',
+                            height: 40, // Adjust the size as needed
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            'Sign in with Apple',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              )),
-              const SizedBox(
-                height: 24, // Spacing between widgets.
               ),
+              const SizedBox(height: 24),
               // Text field for entering the email.
               TextFieldInput(
                 hintText: 'Enter your email',
                 textInputType: TextInputType.emailAddress,
                 textEditingController: _emailController,
               ),
-              const SizedBox(
-                height: 24, // Spacing between widgets.
-              ),
+              const SizedBox(height: 24),
               // Text field for entering the password.
               TextFieldInput(
                 hintText: 'Enter your password',
@@ -433,9 +430,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 textEditingController: _passwordController,
                 isPass: true, // Indicates it's a password field.
               ),
-              const SizedBox(
-                height: 24, // Spacing between widgets.
-              ),
+              const SizedBox(height: 24),
               // InkWell for the sign-up button.
               InkWell(
                 onTap: signUpUser, // Calls signUpUser function when tapped.
@@ -444,12 +439,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       .infinity, // Container takes the full width of the screen.
                   alignment: Alignment
                       .center, // Centers the text inside the container.
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 12), // Padding inside the container.
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   decoration: const ShapeDecoration(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(2)), // Rounded corners.
+                      borderRadius: BorderRadius.all(Radius.circular(2)),
                     ),
                     color: Colors.brown, // Background color of the button.
                   ),
@@ -459,18 +452,14 @@ class _SignupScreenState extends State<SignupScreen> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         )
                       : const CircularProgressIndicator(
-                          color:
-                              primaryColor, // Loading indicator when signing up.
+                          color: primaryColor,
                         ),
                 ),
               ),
-              const SizedBox(
-                height: 1, // Spacing between widgets.
-              ),
+              const SizedBox(height: 1),
               Flexible(
                 flex: 2,
-                child:
-                    Container(), // Flexible space at the bottom of the screen.
+                child: Container(),
               ),
               // Row for navigating to the login screen.
               Row(
@@ -478,8 +467,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     .center, // Centers the row items horizontally.
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 2), // Padding for the text.
+                    padding: const EdgeInsets.symmetric(vertical: 2),
                     child: const Text(
                       'Already have an account?',
                     ),
@@ -495,8 +483,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ));
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 2), // Padding for the text.
+                      padding: const EdgeInsets.symmetric(vertical: 2),
                       child: const Text(
                         ' Login.',
                         style: TextStyle(

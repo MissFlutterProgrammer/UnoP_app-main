@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,7 @@ import 'package:unop/utils/utils.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final Map<String, dynamic> userData;
-  const EditProfileScreen({Key? key, required this.userData}) : super(key: key);
+  const EditProfileScreen({super.key, required this.userData});
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -77,16 +79,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
             onPressed: updateProfileData,
           ),
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         children: <Widget>[
           Container(
             width: 80, // Width of the square, double the radius
@@ -95,7 +97,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               image: widget.userData['photoUrl'] != null
                   ? DecorationImage(
                       image: CachedNetworkImageProvider(
-                          widget.userData['photoUrl']),
+                        widget.userData['photoUrl'],
+                      ),
                       fit: BoxFit
                           .fitHeight, // Ensures the image covers the container
                     )
@@ -108,15 +111,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ),
           TextButton(
             onPressed: pickImage,
-            child: Text("Change Profile Photo"),
+            child: const Text("Change Profile Photo"),
           ),
           TextField(
             controller: _usernameController,
-            decoration: InputDecoration(labelText: 'Username'),
+            decoration: const InputDecoration(labelText: 'Username'),
           ),
           TextField(
             controller: _bioController,
-            decoration: InputDecoration(labelText: 'Bio'),
+            decoration: const InputDecoration(labelText: 'Bio'),
           ),
         ],
       ),

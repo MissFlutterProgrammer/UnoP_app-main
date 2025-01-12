@@ -12,7 +12,7 @@ import 'package:unop/widgets/change_group_widget.dart';
 import 'package:unop/utils/colors.dart';
 
 class MobileScreenLayout extends StatefulWidget {
-  const MobileScreenLayout({Key? key}) : super(key: key);
+  const MobileScreenLayout({super.key});
 
   @override
   State<MobileScreenLayout> createState() => _MobileScreenLayoutState();

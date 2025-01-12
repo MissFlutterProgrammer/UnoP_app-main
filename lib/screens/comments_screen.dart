@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:unop/models/user.dart';
@@ -12,7 +14,7 @@ import 'package:provider/provider.dart';
 class CommentsScreen extends StatefulWidget {
   final String postId; // Unique identifier for the post
 
-  const CommentsScreen({Key? key, required this.postId}) : super(key: key);
+  const CommentsScreen({super.key, required this.postId});
 
   @override
   _CommentsScreenState createState() => _CommentsScreenState();
@@ -34,8 +36,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
       );
 
       if (res != 'success') {
-        if (context.mounted)
+        if (context.mounted) {
           showSnackBar(context, res); // Showing error message if not successful
+        }
       }
       setState(() {
         commentEditingController.text =
@@ -69,8 +72,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-                child:
-                    CircularProgressIndicator()); // Showing a loader while data is being fetched
+              child: CircularProgressIndicator(),
+            ); // Showing a loader while data is being fetched
           }
 
           return ListView.builder(
@@ -80,7 +83,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   snapshot.data!.docs[index]; // Get the comment data as a Map
 
               return CommentCard(
-                  snap: commentData); // Pass this Map to the CommentCard
+                snap: commentData,
+              ); // Pass this Map to the CommentCard
             },
           );
         },
@@ -90,15 +94,15 @@ class _CommentsScreenState extends State<CommentsScreen> {
         child: Container(
           height: kToolbarHeight,
           margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context)
-                  .viewInsets
-                  .bottom), // Adjusting margin for the keyboard
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ), // Adjusting margin for the keyboard
           padding: const EdgeInsets.only(left: 16, right: 8),
           child: Row(
             children: [
               CircleAvatar(
                 backgroundImage: NetworkImage(
-                    user!.photoUrl), // Displaying user's profile picture
+                  user!.photoUrl,
+                ), // Displaying user's profile picture
                 radius: 18,
               ),
               Expanded(

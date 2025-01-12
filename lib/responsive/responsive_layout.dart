@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:unop/providers/user_provider.dart';
-import 'package:unop/utils/global_variable.dart';
 import 'package:provider/provider.dart';
 
 class ResponsiveLayout extends StatefulWidget {
   final Widget mobileScreenLayout;
   //final Widget webScreenLayout;
   const ResponsiveLayout({
-    Key? key,
+    super.key,
     required this.mobileScreenLayout,
     //required this.webScreenLayout,
-  }) : super(key: key);
+  });
 
   @override
   State<ResponsiveLayout> createState() => _ResponsiveLayoutState();

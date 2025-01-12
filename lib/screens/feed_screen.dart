@@ -1,17 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 import 'package:unop/providers/group_provider.dart';
-
 import 'package:unop/utils/colors.dart';
 import 'package:unop/utils/global_variable.dart';
 import 'package:unop/widgets/post_card.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<FeedScreen> createState() => _FeedScreenState();

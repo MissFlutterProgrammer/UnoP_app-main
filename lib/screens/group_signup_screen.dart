@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -12,7 +14,7 @@ import 'package:unop/utils/utils.dart';
 import 'package:unop/widgets/text_field_input.dart';
 
 class GroupSignupScreen extends StatefulWidget {
-  const GroupSignupScreen({Key? key}) : super(key: key);
+  const GroupSignupScreen({super.key});
 
   @override
   State<GroupSignupScreen> createState() => _GroupSignupScreenState();
@@ -80,10 +82,10 @@ class _GroupSignupScreenState extends State<GroupSignupScreen> {
 
 // Function to select an image from the gallery
   Future<void> selectImage() async {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
 
     // Pick an image
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
 
